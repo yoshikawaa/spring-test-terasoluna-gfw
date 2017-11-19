@@ -4,7 +4,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/33b14fa152bb44d78b85e7952f6bc786)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-test?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yoshikawaa/terasoluna-gfw-test&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/33b14fa152bb44d78b85e7952f6bc786)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-test?utm_source=github.com&utm_medium=referral&utm_content=yoshikawaa/terasoluna-gfw-test&utm_campaign=Badge_Coverage)
 
-A personal (experimental,hobby) project to create Test library for TERASOLUNA Framework 5.x with Spring TestContext Framework.
+A personal (experimental,hobby) project to create Testing library for TERASOLUNA Framework 5.x with Spring TestContext Framework.
 
 ## Notes
 
@@ -117,6 +117,7 @@ Provides result matchers as follows.
 * `codeExists(String...)` : `ResultMessages` contains valid codes. (ex. `ResultMessage.fromCode("e.xx.fw.8001")`)
 * `textExists(String...)` : `ResultMessages` contains valid texts. (ex. `ResultMessage.fromText("message")`)
 * `messageExists(String...)` : `ResultMessages` contains valid resolved messages.
+* `messageExists(Locale, String...)` : `ResultMessages` contains valid resolved messages with specific locale.
 
 You can obtain `ResultMessages` specific named as `resultMessages(String)`.
 And can obtain from various source as follows.
