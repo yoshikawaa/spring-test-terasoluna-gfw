@@ -32,7 +32,7 @@
     </appender>
 
     <!-- Application Loggers -->
-    <logger name="jp.yoshikawaa.gfw">
+    <logger name="io.github.yoshikawaa.gfw">
         <level value="debug" />
     </logger>
 
@@ -82,7 +82,7 @@
     
     <!-- for test -->
     <logger name="org.springframework.test.web.servlet.result">
-        <level value="${logback.level.spring-test:-debug}" />
+        <level value="${app.log.level.test:-debug}" />
     </logger>
 
     <root level="warn">

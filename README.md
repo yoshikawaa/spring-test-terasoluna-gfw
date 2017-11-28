@@ -28,7 +28,7 @@ Add dependency `terasoluna-gfw-test`.
 
 ```xml
 <dependency>
-    <groupId>jp.yoshikawaa.gfw</groupId>
+    <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>terasoluna-gfw-test</artifactId>
     <version><!--$VERSION$--></version>
     <scope>test</scope>
@@ -70,7 +70,7 @@ Provides features as follows.
 ### `transaction` for `MockMvc#perform()`
 
 ```java
-import static jp.yoshikawaa.gfw.test.web.servlet.request.TerasolunaGfwMockMvcRequestPostProcessors.transaction;
+import static io.github.yoshikawaa.gfw.test.web.servlet.request.TerasolunaGfwMockMvcRequestPostProcessors.transaction;
 
 public class ControllerTest extends TerasolunaGfwMockMvcSupport {
     @Test
@@ -95,7 +95,7 @@ You can request invalid token as `transaction().useInvalidToken()`.
 ### `resultMessages` for `ResultAction#andExpect()`
 
 ```java
-import static jp.yoshikawaa.gfw.test.web.servlet.result.TerasolunaGfwMockMvcResultMatchers.resultMessages;
+import static io.github.yoshikawaa.gfw.test.web.servlet.result.TerasolunaGfwMockMvcResultMatchers.resultMessages;
 
 public class ControllerTest extends TerasolunaGfwMockMvcSupport {
     @Test

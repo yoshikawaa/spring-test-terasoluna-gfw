@@ -28,7 +28,7 @@
 
     <mvc:default-servlet-handler />
 
-    <context:component-scan base-package="jp.yoshikawaa.gfw.app" />
+    <context:component-scan base-package="io.github.yoshikawaa.gfw.app" />
 
     <mvc:resources mapping="/resources/**"
         location="/resources/,classpath:META-INF/resources/"
