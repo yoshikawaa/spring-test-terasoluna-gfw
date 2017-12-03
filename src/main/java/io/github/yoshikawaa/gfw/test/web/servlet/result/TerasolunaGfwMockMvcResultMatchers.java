@@ -15,12 +15,34 @@
  */
 package io.github.yoshikawaa.gfw.test.web.servlet.result;
 
+import org.springframework.test.web.servlet.ResultActions;
+import org.terasoluna.gfw.common.message.ResultMessages;
+
+/**
+ * {@link ResultActions} result matchers for TERASOLUNA common libraries.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see ResultActions
+ */
 public final class TerasolunaGfwMockMvcResultMatchers {
 
+    /**
+     * Matches {@link ResultMessages} with default messages attribute name.
+     * 
+     * @return result matchers
+     * @see ResultMessages
+     */
     public static ResultMessagesResultMatchers resultMessages() {
         return new ResultMessagesResultMatchers();
     }
 
+    /**
+     * Matches {@link ResultMessages} with specific messages attribute name.
+     * 
+     * @param resultMessagesAttributeName attribute name to be obtain
+     * @return result matchers
+     * @see ResultMessages
+     */
     public static ResultMessagesResultMatchers resultMessages(String resultMessagesAttributeName) {
         return new ResultMessagesResultMatchers(resultMessagesAttributeName);
     }

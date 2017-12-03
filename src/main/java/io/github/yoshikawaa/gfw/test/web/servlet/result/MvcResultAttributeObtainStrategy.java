@@ -17,6 +17,12 @@ package io.github.yoshikawaa.gfw.test.web.servlet.result;
 
 import org.springframework.test.web.servlet.MvcResult;
 
+/**
+ * Strategy to obtain attribute value from {@link MvcResult}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see MvcResult
+ */
 public enum MvcResultAttributeObtainStrategy {
 
     MODEL {
@@ -44,5 +50,12 @@ public enum MvcResultAttributeObtainStrategy {
         }
     };
 
+    /**
+     * Obtain attribute value.
+     * 
+     * @param result source {@link MvcResult}
+     * @param attributeName attribute name
+     * @return attribute value
+     */
     protected abstract Object obtainAttribute(MvcResult result, String attributeName);
 }

@@ -25,49 +25,96 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.ui.Model;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.FlashMap;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.terasoluna.gfw.common.message.StandardResultMessageType;
 
+/**
+ * Result matchers for {@link ResultMessages}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see ResultMatcher
+ * @see ResultMessages
+ * @see ResultMessage
+ * @see MessageSource
+ */
 public class ResultMessagesResultMatchers {
 
     private final String resultMessagesAttributeName;
     private MvcResultAttributeObtainStrategy strategy = MvcResultAttributeObtainStrategy.REQUEST;
 
+    /**
+     * With default messages attribute name.
+     */
     protected ResultMessagesResultMatchers() {
         this.resultMessagesAttributeName = ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME;
     }
 
+    /**
+     * With specific messages attribute name.
+     * 
+     * @param resultMessagesAttributeName attribute name to be obtain
+     */
     protected ResultMessagesResultMatchers(String resultMessagesAttributeName) {
         this.resultMessagesAttributeName = resultMessagesAttributeName;
     }
 
+    /**
+     * Obtain {@link ResultMessages} from {@link Model}.
+     * 
+     * @return itself
+     */
     public ResultMessagesResultMatchers fromModel() {
         this.strategy = MvcResultAttributeObtainStrategy.MODEL;
         return this;
     }
 
+    /**
+     * Obtain {@link ResultMessages} from {@link FlashMap}.
+     * 
+     * @return itself
+     */
     public ResultMessagesResultMatchers fromFlashMap() {
         this.strategy = MvcResultAttributeObtainStrategy.FLASH_MAP;
         return this;
     }
 
+    /**
+     * Obtain {@link ResultMessages} from {@link HttpServletRequest}.
+     * 
+     * @return itself
+     */
     public ResultMessagesResultMatchers fromRequest() {
         this.strategy = MvcResultAttributeObtainStrategy.REQUEST;
         return this;
     }
 
+    /**
+     * Obtain {@link ResultMessages} from {@link HttpSession}.
+     * 
+     * @return itself
+     */
     public ResultMessagesResultMatchers fromSession() {
         this.strategy = MvcResultAttributeObtainStrategy.SESSION;
         return this;
     }
 
-    public <T> ResultMatcher exists() {
+    /**
+     * {@link ResultMessages} exists.
+     * 
+     * @return result matcher
+     */
+    public ResultMatcher exists() {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult result) {
@@ -76,7 +123,12 @@ public class ResultMessagesResultMatchers {
         };
     }
 
-    public <T> ResultMatcher notExists() {
+    /**
+     * {@link ResultMessages} not exists.
+     * 
+     * @return result matcher
+     */
+    public ResultMatcher notExists() {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult result) {
@@ -87,7 +139,16 @@ public class ResultMessagesResultMatchers {
         };
     }
 
-    public <T> ResultMatcher type(final StandardResultMessageType type) {
+    /**
+     * {@link ResultMessages} has specific type.
+     * <p>
+     * Correspond to etc {@link ResultMessages#success()}, {@link ResultMessages#warn()}...
+     * </p>
+     * 
+     * @param type type of result messages
+     * @return result matcher
+     */
+    public ResultMatcher type(final StandardResultMessageType type) {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult result) {
@@ -97,7 +158,16 @@ public class ResultMessagesResultMatchers {
         };
     }
 
-    public <T> ResultMatcher codeExists(final String... codes) {
+    /**
+     * {@link ResultMessages} has specific codes.
+     * <p>
+     * Correspond to {@link ResultMessage#fromCode(String, Object...)}.
+     * </p>
+     * 
+     * @param codes codes of result message
+     * @return result matcher
+     */
+    public ResultMatcher codeExists(final String... codes) {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult result) {
@@ -112,7 +182,16 @@ public class ResultMessagesResultMatchers {
         };
     }
 
-    public <T> ResultMatcher textExists(final String... texts) {
+    /**
+     * {@link ResultMessages} has specific texts.
+     * <p>
+     * Correspond to {@link ResultMessage#fromText(String)}
+     * </p>
+     * 
+     * @param texts texts of result message
+     * @return result matcher
+     */
+    public ResultMatcher textExists(final String... texts) {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult result) {
@@ -127,7 +206,19 @@ public class ResultMessagesResultMatchers {
         };
     }
 
-    public <T> ResultMatcher messageExists(final String... messages) {
+    /**
+     * {@link ResultMessages} has specific messages with default locale.
+     * <p>
+     * Correspond to {@link ResultMessage#fromCode(String, Object...)} and {@link ResultMessage#fromText(String)}.
+     * Message is resolved from {@link ResultMessage#getCode()} and {@link ResultMessage#getArgs()} using
+     * {@link MessageSource}.
+     * </p>
+     * 
+     * @param messages resolved messages of result message
+     * @return result matcher
+     * @see MessageSource
+     */
+    public ResultMatcher messageExists(final String... messages) {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult result) {
@@ -144,7 +235,20 @@ public class ResultMessagesResultMatchers {
         };
     }
 
-    public <T> ResultMatcher messageExists(final Locale locale, final String... messages) {
+    /**
+     * {@link ResultMessages} has specific messages with specific locale.
+     * <p>
+     * Correspond to {@link ResultMessage#fromCode(String, Object...)} and {@link ResultMessage#fromText(String)}.
+     * Message is resolved from {@link ResultMessage#getCode()} and {@link ResultMessage#getArgs()} using
+     * {@link MessageSource} with specific locale.
+     * </p>
+     * 
+     * @param locale locale using resolve message
+     * @param messages resolved messages of result message
+     * @return result matcher
+     * @see MessageSource
+     */
+    public ResultMatcher messageExists(final Locale locale, final String... messages) {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult result) {

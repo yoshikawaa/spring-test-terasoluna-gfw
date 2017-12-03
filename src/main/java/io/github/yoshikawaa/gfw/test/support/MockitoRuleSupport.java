@@ -16,9 +16,22 @@
 package io.github.yoshikawaa.gfw.test.support;
 
 import org.junit.Rule;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+/**
+ * General mock test support with {@link MockitoRule}.
+ * <p>
+ * using {@link Mock}, {@link InjectMocks} as annotation driven.
+ * </p>
+ * 
+ * @author Atsushi Yoshikawa
+ * @see MockitoRule
+ * @see Mock
+ * @see InjectMocks
+ */
 public abstract class MockitoRuleSupport {
 
     @Rule

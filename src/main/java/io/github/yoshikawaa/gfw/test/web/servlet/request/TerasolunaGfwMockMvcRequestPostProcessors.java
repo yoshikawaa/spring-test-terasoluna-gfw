@@ -23,6 +23,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
@@ -32,25 +33,64 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.handler.MappedInterceptor;
 import org.terasoluna.gfw.web.token.TokenStringGenerator;
 import org.terasoluna.gfw.web.token.transaction.TransactionToken;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenCheck;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInfo;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenStore;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
+/**
+ * {@link MockMvc} request post processors for TERASOLUNA common libraries.
+ * 
+ * @author Atsushi Yoshikawa
+ */
 public final class TerasolunaGfwMockMvcRequestPostProcessors {
 
+    /**
+     * Process {@link TransactionToken} without {@link TransactionTokenCheck#namespace} (global token).
+     * 
+     * @return request post processor
+     * @see TransactionToken
+     * @see TransactionTokenCheck
+     */
     public static TransactionTokenRequestPostProcessor transaction() {
         return new TransactionTokenRequestPostProcessor();
     }
 
+    /**
+     * Process {@link TransactionToken} with simple {@link TransactionTokenCheck#namespace}.
+     * 
+     * @param namespace specified namespace at class or method.
+     * @return request post processor
+     * @see TransactionToken
+     * @see TransactionTokenCheck
+     */
     public static TransactionTokenRequestPostProcessor transaction(String namespace) {
         return new TransactionTokenRequestPostProcessor(namespace);
     }
 
+    /**
+     * Process {@link TransactionToken} with complex {@link TransactionTokenCheck#namespace}.
+     * 
+     * @param classTokenName specified namespace at class.
+     * @param methodTokenName specified namespace at method.
+     * @return request post processor
+     * @see TransactionToken
+     * @see TransactionTokenCheck
+     */
     public static TransactionTokenRequestPostProcessor transaction(String classTokenName, String methodTokenName) {
         return new TransactionTokenRequestPostProcessor(classTokenName, methodTokenName);
     }
 
+    /**
+     * Request post processor for {@link TransactionTokenCheck}.
+     * 
+     * @author Atsushi Yoshikawa
+     * @see RequestPostProcessor
+     * @see TransactionTokenCheck
+     * @see TransactionTokenInterceptor
+     * @see TransactionToken
+     */
     public static class TransactionTokenRequestPostProcessor implements RequestPostProcessor {
 
         private static final String GLOBAL_TOKEN_NAME = "globalToken";
@@ -58,23 +98,45 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
         private final String namespace;
         private boolean useInvalidToken;
 
+        /**
+         * Without {@link TransactionTokenCheck#namespace} (global token).
+         */
         private TransactionTokenRequestPostProcessor() {
             this.namespace = GLOBAL_TOKEN_NAME;
         }
 
+        /**
+         * With simple {@link TransactionTokenCheck#namespace}.
+         * 
+         * @param namespace specified namespace at class or method.
+         */
         private TransactionTokenRequestPostProcessor(String namespace) {
             this.namespace = (namespace != null && !namespace.isEmpty()) ? namespace : GLOBAL_TOKEN_NAME;
         }
 
+        /**
+         * With complex {@link TransactionTokenCheck#namespace}.
+         * 
+         * @param classTokenName specified namespace at class.
+         * @param methodTokenName specified namespace at method.
+         */
         private TransactionTokenRequestPostProcessor(String classTokenName, String methodTokenName) {
             this.namespace = createTokenName(classTokenName, methodTokenName);
         }
 
+        /**
+         * Process invalid {@link TransactionToken}.
+         * 
+         * @return itself
+         */
         public TransactionTokenRequestPostProcessor useInvalidToken() {
             this.useInvalidToken = true;
             return this;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
 
@@ -150,6 +212,19 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
                     : token;
         }
 
+        /**
+         * {@link TransactionTokenStore} for {@link TransactionTokenRequestPostProcessor}. this wrapped actual
+         * transaction token store.
+         * <ul>
+         * <li>If use generated token by {@link TransactionTokenRequestPostProcessor}, this token store handle
+         * token.</li>
+         * <li>If use actual received token, actual token store handle token.</li>
+         * </ul>
+         * 
+         * @author Atsushi Yoshikawa
+         * @see TransactionTokenStore
+         * @see TransactionTokenRequestPostProcessor
+         */
         private static class TestTransactionTokenStore implements TransactionTokenStore {
 
             private final static String ENABLED_TEST_TOKEN_KEY = TestTransactionTokenStore.class.getSimpleName()
@@ -163,6 +238,9 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
                 this.delegate = delegate;
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public String getAndClear(TransactionToken token) {
 
@@ -175,6 +253,9 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void remove(TransactionToken token) {
 
@@ -185,11 +266,17 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public String createAndReserveTokenKey(String tokenName) {
                 return delegate.createAndReserveTokenKey(tokenName);
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void store(TransactionToken token) {
 
@@ -200,6 +287,9 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
                 }
             }
 
+            /**
+             * @return token key for test
+             */
             public String createTestTokenKey() {
                 return ENABLED_TEST_TOKEN_KEY;
             }

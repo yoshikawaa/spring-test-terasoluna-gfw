@@ -59,14 +59,14 @@ public class ControllerTest extends TerasolunaGfwMockMvcSupport {
 }
 ```
 
-Supports testing application based on TERASOLUNA blank project with `MockMvc`.
+Supports testing controller based on TERASOLUNA blank project with `MockMvc`.
 Provides features as follows.
 
 * using configured `MockMvc` as protected field `mvc`.
 * logging `MvcResult`. (Logger name `org.springframework.test.web.servlet.result`)
 * using `@Mock`, `@InjectMocks` as annotation driven.
 
-> By default, `MockMvc` is configured with Bean definitions of TERASOLUNA blank project, Servlet Filters, with Spring Security. You can re-configure it as extending `TerasolunaGfwMockMvcSupport#setupMockMvc()`.
+> By default, `MockMvc` is configured with Bean definitions of TERASOLUNA blank project, Servlet Filters, with Spring Security. You can re-configure it as extending `MockMvcSupport`.
 
 ### `transaction` for `MockMvc#perform()`
 
@@ -84,9 +84,9 @@ public class ControllerTest extends TerasolunaGfwMockMvcSupport {
 Supports validate `@TransactionTokenCheck` more easily.
 Provides token namespace patterns as follows.
 
-* `transaction()` : validate global token.  (ex. `@TransactionTokenCheck(type = TransactionTokenType.IN)`)
-* `transaction(String)` : validate simple namespace token. (specified by class or method ex. `@TransactionTokenCheck(namespace = "sample", type = TransactionTokenType.IN)`)
-* `transaction(String, String)` : validate complex namespace token. (specified by class and method)
+* `transaction()` : process global token.  (ex. `@TransactionTokenCheck(type = TransactionTokenType.IN)`)
+* `transaction(String)` : process simple namespace token. (specified by class or method ex. `@TransactionTokenCheck(namespace = "sample", type = TransactionTokenType.IN)`)
+* `transaction(String, String)` : process complex namespace token. (specified by class and method)
 
 You can request invalid token as `transaction().useInvalidToken()`.
 
