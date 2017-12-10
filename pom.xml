@@ -35,6 +35,10 @@
             <distribution>manual</distribution>
         </license>
     </licenses>
+    <organization>
+        <name>Atsushi Yoshikawa</name>
+        <url>https://yoshikawaa.github.io</url>
+    </organization>
     <developers>
         <developer>
             <name>Atsushi Yoshikawa</name>
@@ -48,13 +52,13 @@
     </scm>
     <distributionManagement>
         <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
+            <id>ossrh</id>
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
+            <id>ossrh</id>
+            <name>Sonatype Nexus Releases</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
@@ -98,6 +102,7 @@
         <dependency>
             <groupId>org.terasoluna.gfw</groupId>
             <artifactId>terasoluna-gfw-web</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- == For Test == -->
@@ -246,9 +251,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -264,6 +266,7 @@
 
     <properties>
         <java-version>1.8</java-version>
+        <gpg.skip>true</gpg.skip>
     </properties>
 
 </project>

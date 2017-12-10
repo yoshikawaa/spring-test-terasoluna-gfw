@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/yoshikawaa/terasoluna-gfw-test.svg?branch=master)](https://travis-ci.org/yoshikawaa/terasoluna-gfw-test)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/33b14fa152bb44d78b85e7952f6bc786)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-test?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yoshikawaa/terasoluna-gfw-test&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/33b14fa152bb44d78b85e7952f6bc786)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-test?utm_source=github.com&utm_medium=referral&utm_content=yoshikawaa/terasoluna-gfw-test&utm_campaign=Badge_Coverage)
+[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/https/oss.sonatype.org/io.github.yoshikawaa.gfw/terasoluna-gfw-test.svg)](https://oss.sonatype.org/content/repositories/snapshots/io/github/yoshikawaa/gfw/terasoluna-gfw-test/)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat)](https://github.com/yoshikawaa/terasoluna-gfw-test/blob/master/LICENSE.txt)
 
 A personal (experimental,hobby) project to create Testing library for TERASOLUNA Framework 5.x with Spring TestContext Framework.
@@ -15,12 +16,19 @@ A personal (experimental,hobby) project to create Testing library for TERASOLUNA
 
 ## Getting Start
 
-### Clone and install.
+### Configure Maven.
 
-```bash
-$ git clone -b master https://github.com/yoshikawaa/terasoluna-gfw-test.git
-$ cd terasoluna-gfw-test
-$ mvn clean install
+(If you use SNAPSHOT version) Add SNAPSHOT repository. (settings.xml or pom.xml)
+
+```xml
+<repositories>
+    <repository>
+        <id>sonatype-snapshots</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        <releases><enabled>false</enabled></releases>
+        <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+</repositories>
 ```
 
 ### Configure dependency.
@@ -42,7 +50,7 @@ Auto resolved follows dependency.
 * `mockito-core`
 * `spring-test`
 * `spring-security-test`
-* `terasoluna-gfw-web`
+* `terasoluna-gfw-web` (optional)
 
 ----
 
