@@ -23,10 +23,10 @@ import org.terasoluna.gfw.web.token.transaction.TransactionToken;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 
 import io.github.yoshikawaa.gfw.app.TransactionTokenGlobalTokenController;
-import io.github.yoshikawaa.gfw.test.support.TerasolunGfwMockMvcSupport;
+import io.github.yoshikawaa.gfw.test.support.WebAppContextMockMvcSupport;
 import io.github.yoshikawaa.gfw.test.web.servlet.request.TerasolunaGfwMockMvcRequestPostProcessors.TransactionTokenRequestPostProcessor;
 
-public class TransactionTokenRequestPostProcessorTest extends TerasolunGfwMockMvcSupport {
+public class TransactionTokenRequestPostProcessorTest extends WebAppContextMockMvcSupport {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();

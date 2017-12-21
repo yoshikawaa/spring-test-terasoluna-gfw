@@ -11,9 +11,9 @@ import java.util.Locale;
 import org.junit.Test;
 import org.terasoluna.gfw.common.message.StandardResultMessageType;
 
-import io.github.yoshikawaa.gfw.test.support.TerasolunGfwMockMvcSupport;
+import io.github.yoshikawaa.gfw.test.support.WebAppContextMockMvcSupport;
 
-public class ResultMessagesResultMatchersTest extends TerasolunGfwMockMvcSupport {
+public class ResultMessagesResultMatchersTest extends WebAppContextMockMvcSupport {
 
     @Test
     public void testNonMessages() throws Exception {

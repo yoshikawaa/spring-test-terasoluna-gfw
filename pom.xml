@@ -154,7 +154,13 @@
             <type>pom</type>
             <scope>test</scope>
         </dependency>
-        <!-- == For Test == -->
+
+        <!-- == For Test Environments == -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

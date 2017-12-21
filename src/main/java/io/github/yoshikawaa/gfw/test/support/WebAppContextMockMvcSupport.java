@@ -19,9 +19,6 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -30,21 +27,17 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import org.terasoluna.gfw.web.logging.mdc.MDCClearFilter;
 import org.terasoluna.gfw.web.logging.mdc.XTrackMDCPutFilter;
 
+import io.github.yoshikawaa.gfw.test.context.web.WebAppContextConfiguration;
+
 /**
- * Controller test support using {@link MockMvc} configured with TERASOLUNA project settings.
+ * Controller test support using {@link MockMvc} configured with web application context.
  * 
  * @author Atsushi Yoshikawa
  * @see MockMvcSupport
- * @see WebAppConfiguration
- * @see ContextConfiguration
- * @see ContextHierarchy
+ * @see WebAppContextConfiguration
  */
-@WebAppConfiguration
-@ContextHierarchy({
-        @ContextConfiguration({ "classpath*:META-INF/spring/applicationContext.xml",
-                "classpath*:META-INF/spring/spring-security.xml" }),
-        @ContextConfiguration("classpath*:META-INF/spring/spring-mvc.xml") })
-public abstract class TerasolunGfwMockMvcSupport extends MockMvcSupport {
+@WebAppContextConfiguration
+public abstract class WebAppContextMockMvcSupport extends MockMvcSupport {
 
     @Autowired
     private WebApplicationContext context;

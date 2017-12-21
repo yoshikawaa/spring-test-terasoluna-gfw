@@ -56,10 +56,12 @@ Auto resolved follows dependency.
 
 ## Function References
 
-### `TerasolunaGfwMockMvcSupport` for Controller Tests
+### Testing Support Base Classes
+
+#### `WebAppContextMockMvcSupport` for Controller Tests
 
 ```java
-public class ControllerTest extends TerasolunaGfwMockMvcSupport {
+public class ControllerTest extends WebAppContextMockMvcSupport {
     @Test
     public void test() throws Exception {
         mvc.perform(get("/"));
@@ -76,7 +78,66 @@ Provides features as follows.
 
 > By default, `MockMvc` is configured with Bean definitions of TERASOLUNA blank project, Servlet Filters, with Spring Security. You can re-configure it as extending `MockMvcSupport`.
 
-### `transaction` for `MockMvc#perform()`
+### Testing Annotations
+
+#### `@TestContextConfiguration`
+
+```java
+@RunWith(SpringRunner.class)
+@TestContextConfiguration
+public class ServiceTest {
+}
+```
+
+Supports configuring tests for domain layer (services, repositories) based on TERASOLUNA blank project.
+Provides features as follows.
+
+* `@ContextConfiguration` for `test-context.xml`.
+
+#### `@WebAppContextConfiguration`
+
+```java
+@RunWith(SpringRunner.class)
+@WebAppContextConfiguration
+public class ControllerTest {
+}
+```
+
+Supports configuring tests for web application layer (controllers) based on TERASOLUNA blank project.
+Provides features as follows.
+
+* `@WebAppConfiguration`.
+* `@ContextHierarchy` as follows layering configuration.
+* `@ContextConfiguration` for `applicationContext.xml,spring-security.xml`.
+* `@ContextConfiguration` for `spring-mvc.xml`.
+
+> For simpler, use `WebAppContextMockMvcSupport`.
+
+#### `@SqlBefore`
+
+```java
+@Test
+@SqlBefore("setup.sql")
+public void test() {
+}
+```
+
+Supports `@Sql` configured with phase `ExecutionPhase.BEFORE_TEST_METHOD`.
+
+#### `@SqlAfter`
+
+```java
+@Test
+@SqlAfter("cleanup.sql")
+public void test() {
+}
+```
+
+Supports `@Sql` configured with phase `ExecutionPhase.AFTER_TEST_METHOD`.
+
+### Testing With MockMvc
+
+#### `transaction` for `MockMvc#perform()`
 
 ```java
 import static io.github.yoshikawaa.gfw.test.web.servlet.request.TerasolunaGfwMockMvcRequestPostProcessors.transaction;
