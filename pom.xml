@@ -66,7 +66,7 @@
     <parent>
         <groupId>org.terasoluna.gfw</groupId>
         <artifactId>terasoluna-gfw-parent</artifactId>
-        <version>5.3.1.RELEASE</version>
+        <version>5.4.1.RELEASE</version>
         <relativePath></relativePath>
     </parent>
 
