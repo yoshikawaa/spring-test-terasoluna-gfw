@@ -15,9 +15,12 @@
  */
 package io.github.yoshikawaa.gfw.test.context.web;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.test.context.ContextConfiguration;
@@ -40,8 +43,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
  * @see ContextConfiguration
  * @see ContextHierarchy
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Target({ TYPE, ANNOTATION_TYPE })
+@Retention(RUNTIME)
 @WebAppConfiguration
 @ContextHierarchy({
         @ContextConfiguration({ "classpath*:META-INF/spring/applicationContext.xml",

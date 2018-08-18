@@ -26,10 +26,9 @@ import org.springframework.test.web.servlet.MockMvc;
  * @author Atsushi Yoshikawa
  * @see SpringRunner
  * @see MockMvc
- * @see MockitoRuleSupport
  */
 @RunWith(SpringRunner.class)
-public abstract class MockMvcSupport extends MockitoRuleSupport {
+public abstract class MockMvcSupport {
 
     /**
      * {@link MockMvc} configured at {@link #setupMockMvc()}.

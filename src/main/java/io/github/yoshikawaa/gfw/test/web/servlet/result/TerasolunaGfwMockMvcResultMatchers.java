@@ -17,6 +17,7 @@ package io.github.yoshikawaa.gfw.test.web.servlet.result;
 
 import org.springframework.test.web.servlet.ResultActions;
 import org.terasoluna.gfw.common.message.ResultMessages;
+import org.terasoluna.gfw.web.token.transaction.TransactionToken;
 
 /**
  * {@link ResultActions} result matchers for TERASOLUNA common libraries.
@@ -25,6 +26,16 @@ import org.terasoluna.gfw.common.message.ResultMessages;
  * @see ResultActions
  */
 public final class TerasolunaGfwMockMvcResultMatchers {
+
+    /**
+     * Matches {@link TransactionToken}.
+     * 
+     * @return result matchers
+     * @see TransactionToken
+     */
+    public static TransactionTokenResultMatchers token() {
+        return new TransactionTokenResultMatchers();
+    }
 
     /**
      * Matches {@link ResultMessages} with default messages attribute name.

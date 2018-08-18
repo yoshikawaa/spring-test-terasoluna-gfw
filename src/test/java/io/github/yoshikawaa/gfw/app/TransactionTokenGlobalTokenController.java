@@ -35,4 +35,9 @@ public class TransactionTokenGlobalTokenController {
         return "success";
     }
     
+    @GetMapping("non-token")
+    public String nonToken() {
+        return "success";
+    }
+    
 }

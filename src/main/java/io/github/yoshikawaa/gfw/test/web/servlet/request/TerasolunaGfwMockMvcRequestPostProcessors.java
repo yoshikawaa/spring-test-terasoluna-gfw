@@ -25,7 +25,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.FrameworkServlet;
@@ -38,6 +37,8 @@ import org.terasoluna.gfw.web.token.transaction.TransactionTokenInfo;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenStore;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
+
+import io.github.yoshikawaa.gfw.test.util.TransactionTokenUtil;
 
 /**
  * {@link MockMvc} request post processors for TERASOLUNA common libraries.
@@ -93,8 +94,6 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
      */
     public static class TransactionTokenRequestPostProcessor implements RequestPostProcessor {
 
-        private static final String GLOBAL_TOKEN_NAME = "globalToken";
-
         private final String namespace;
         private boolean useInvalidToken;
 
@@ -102,7 +101,7 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
          * Without {@link TransactionTokenCheck#namespace} (global token).
          */
         private TransactionTokenRequestPostProcessor() {
-            this.namespace = GLOBAL_TOKEN_NAME;
+            this.namespace = TransactionTokenUtil.GLOBAL_TOKEN_NAME;
         }
 
         /**
@@ -111,7 +110,8 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
          * @param namespace specified namespace at class or method.
          */
         private TransactionTokenRequestPostProcessor(String namespace) {
-            this.namespace = (namespace != null && !namespace.isEmpty()) ? namespace : GLOBAL_TOKEN_NAME;
+            this.namespace = (namespace != null && !namespace.isEmpty()) ? namespace
+                    : TransactionTokenUtil.GLOBAL_TOKEN_NAME;
         }
 
         /**
@@ -121,7 +121,7 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
          * @param methodTokenName specified namespace at method.
          */
         private TransactionTokenRequestPostProcessor(String classTokenName, String methodTokenName) {
-            this.namespace = createTokenName(classTokenName, methodTokenName);
+            this.namespace = TransactionTokenUtil.createTokenName(classTokenName, methodTokenName);
         }
 
         /**
@@ -147,25 +147,6 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
 
             request.setParameter(TransactionTokenInterceptor.TOKEN_REQUEST_PARAMETER, token.getTokenString());
             return request;
-        }
-
-        private String createTokenName(final String classTokenName, final String methodTokenName) {
-
-            StringBuilder tokenNameStringBuilder = new StringBuilder();
-            if (StringUtils.hasText(classTokenName)) {
-                tokenNameStringBuilder.append(classTokenName);
-            }
-            if (StringUtils.hasText(methodTokenName)) {
-                if (tokenNameStringBuilder.length() != 0) {
-                    tokenNameStringBuilder.append("/");
-                }
-                tokenNameStringBuilder.append(methodTokenName);
-            }
-            if (tokenNameStringBuilder.length() == 0) {
-                tokenNameStringBuilder.append(GLOBAL_TOKEN_NAME);
-            }
-
-            return tokenNameStringBuilder.toString();
         }
 
         private TransactionTokenInterceptor getInterceptor(MockHttpServletRequest request) {

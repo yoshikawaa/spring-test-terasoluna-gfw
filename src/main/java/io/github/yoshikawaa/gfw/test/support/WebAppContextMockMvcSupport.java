@@ -47,12 +47,16 @@ public abstract class WebAppContextMockMvcSupport extends MockMvcSupport {
      */
     @Override
     protected MockMvc setupMockMvc() {
+        // @formatter:off
         return MockMvcBuilders.webAppContextSetup(context)
-                .addFilters(new MDCClearFilter(), new DelegatingFilterProxy("exceptionLoggingFilter", context),
-                        new XTrackMDCPutFilter(), new CharacterEncodingFilter("UTF-8", true))
+                .addFilters(new MDCClearFilter(),
+                        new DelegatingFilterProxy("exceptionLoggingFilter", context),
+                        new XTrackMDCPutFilter(),
+                        new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .alwaysDo(log())
                 .build();
+        // @formatter:on
     }
 
 }

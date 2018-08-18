@@ -44,12 +44,11 @@ Add dependency `terasoluna-gfw-test`.
 </dependency>
 ```
 
-Auto resolved follows dependency.
+Automatically resolved follows dependencies.
 
 * `junit`
-* `mockito-core`
 * `spring-test`
-* `spring-security-test`
+* `spring-security-test` (optional)
 * `terasoluna-gfw-web` (optional)
 
 ----
@@ -57,6 +56,9 @@ Auto resolved follows dependency.
 ## Function References
 
 ### Testing Support Base Classes
+
+* `WebAppContextMockMvcSupport`
+* `MockMvcSupport`
 
 #### `WebAppContextMockMvcSupport` for Controller Tests
 
@@ -72,13 +74,17 @@ public class ControllerTest extends WebAppContextMockMvcSupport {
 Supports testing controller based on TERASOLUNA blank project with `MockMvc`.
 Provides features as follows.
 
-* using configured `MockMvc` as protected field `mvc`.
-* logging `MvcResult`. (Logger name `org.springframework.test.web.servlet.result`)
-* using `@Mock`, `@InjectMocks` as annotation driven.
+* enable to use `MockMvc` as protected field `mvc`.
+* enable to log `MvcResult`. (Logger name `org.springframework.test.web.servlet.result`)
 
-> By default, `MockMvc` is configured with Bean definitions of TERASOLUNA blank project, Servlet Filters, with Spring Security. You can re-configure it as extending `MockMvcSupport`.
+> By default, `MockMvc` is configured with default settings of TERASOLUNA blank project (Bean definitions files, Servlet Filters, and enable Spring Security). You can re-configure it to extend `MockMvcSupport`.
 
 ### Testing Annotations
+
+* `@TestContextConfiguration`
+* `@WebAppContextConfiguration`
+* `@SqlBefore`
+* `@SqlAfter`
 
 #### `@TestContextConfiguration`
 
@@ -108,10 +114,10 @@ Provides features as follows.
 
 * `@WebAppConfiguration`.
 * `@ContextHierarchy` as follows layering configuration.
-* `@ContextConfiguration` for `applicationContext.xml,spring-security.xml`.
+* `@ContextConfiguration` for `applicationContext.xml`, `spring-security.xml`.
 * `@ContextConfiguration` for `spring-mvc.xml`.
 
-> For simpler, use `WebAppContextMockMvcSupport`.
+> For simpler, please use `WebAppContextMockMvcSupport`.
 
 #### `@SqlBefore`
 
@@ -135,9 +141,12 @@ public void test() {
 
 Supports `@Sql` configured with phase `ExecutionPhase.AFTER_TEST_METHOD`.
 
-### Testing With MockMvc
+### Testing support for MockMvc
 
-#### `transaction` for `MockMvc#perform()`
+* `TerasolunaGfwMockMvcRequestPostProcessors`
+* `TerasolunaGfwMockMvcResultMatchers`
+
+#### `transaction` post processor for `MockMvc#perform()`
 
 ```java
 import static io.github.yoshikawaa.gfw.test.web.servlet.request.TerasolunaGfwMockMvcRequestPostProcessors.transaction;
@@ -150,19 +159,46 @@ public class ControllerTest extends TerasolunaGfwMockMvcSupport {
 }
 ```
 
-Supports validate `@TransactionTokenCheck` more easily.
+Supports pass `@TransactionTokenCheck` more easily.
 Provides token namespace patterns as follows.
 
-* `transaction()` : process global token.  (ex. `@TransactionTokenCheck(type = TransactionTokenType.IN)`)
-* `transaction(String)` : process simple namespace token. (specified by class or method ex. `@TransactionTokenCheck(namespace = "sample", type = TransactionTokenType.IN)`)
-* `transaction(String, String)` : process complex namespace token. (specified by class and method)
+* `transaction()` : process global token.  (ex. `@TransactionTokenCheck`)
+* `transaction(String)` : process simple namespace token. (specified by class or method. ex. `@TransactionTokenCheck(namespace = "sample")`)
+* `transaction(String, String)` : process complex namespace token. (specified by class and method.)
 
-You can request invalid token as `transaction().useInvalidToken()`.
+And you can request invalid token as `transaction().useInvalidToken()`.
 
-> If you request transaction token with request parameter, token will be validated by actual transaction token check mechanism.
+> If you send transaction token using request parameter, token will be validated by actual transaction token check mechanism.
+
+### `token` result matcher for `ResultAction#andExpect()`
+
+```java
+import static io.github.yoshikawaa.gfw.test.web.servlet.result.TerasolunaGfwMockMvcResultMatchers.token;
+
+public class ControllerTest extends TerasolunaGfwMockMvcSupport {
+    @Test
+    public void test() throws Exception {
+        mvc.perform(post("/").with(transaction()))
+            .andExpect(token().global())
+            .andExpect(token().updated());
+    }
+}
+```
+
+Supports validate `@TransactionTokenCheck` more easily.
+Provides result matchers as follows.
+
+* `global()` : validate global token.  (ex. `@TransactionTokenCheck`)
+* `namespace(String)` : validate simple namespace token. (specified by class or method. ex. `@TransactionTokenCheck(namespace = "sample")`)
+* `namespace(String, String)` : validate complex namespace token. (specified by class and method.)
+* `notExists()` : validate token not exists. (validate to not use `@TransactionTokenCheck`.)
+* `updated()` : validate token is updated. (ex. `@TransactionTokenCheck(type = TransactionTokenType.IN)`)
+* `notUpdated()` : validate token is updated. (ex. `@TransactionTokenCheck(type = TransactionTokenType.CHECH)`)
+
+> This result matchers validate generated token in request attribute.
 
 
-### `resultMessages` for `ResultAction#andExpect()`
+### `resultMessages` result matcher for `ResultAction#andExpect()`
 
 ```java
 import static io.github.yoshikawaa.gfw.test.web.servlet.result.TerasolunaGfwMockMvcResultMatchers.resultMessages;
