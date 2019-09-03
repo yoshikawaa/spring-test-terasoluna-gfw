@@ -68,8 +68,8 @@ public class SqlAfterTest {
     public static void tearDownAfterClass() {
         verify(mockAppender, times(execDropCount)).doAppend(argThat(new ArgumentMatcher<LoggingEvent>() {
             @Override
-            public boolean matches(Object argument) {
-                String message = ((LoggingEvent) argument).getFormattedMessage();
+            public boolean matches(LoggingEvent argument) {
+                String message = argument.getFormattedMessage();
                 return message.startsWith(" org.springframework.jdbc.datasource.init.ScriptUtils.executeSqlScript")
                         && message.contains("drop table if exists todo");
             }
