@@ -153,6 +153,12 @@ public final class TerasolunaGfwMockMvcRequestPostProcessors {
 
             WebApplicationContext context = WebApplicationContextUtils
                     .getWebApplicationContext(request.getServletContext(), FrameworkServlet.SERVLET_CONTEXT_PREFIX);
+
+            TransactionTokenInterceptor transactionTokenInterceptor = context
+                    .getBeanProvider(TransactionTokenInterceptor.class).getIfAvailable();
+            if (transactionTokenInterceptor != null) {
+                return transactionTokenInterceptor;
+            }
             for (Entry<String, MappedInterceptor> mapped : context.getBeansOfType(MappedInterceptor.class).entrySet()) {
                 HandlerInterceptor interceptor = mapped.getValue().getInterceptor();
                 if (interceptor instanceof TransactionTokenInterceptor) {
