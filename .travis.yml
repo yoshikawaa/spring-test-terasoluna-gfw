@@ -13,5 +13,5 @@ install:
 script:
   - mvn clean install -Dapp.log.level.test=info
 after_script:
-  - mvn jacoco:report
-  - java -jar codacy-coverage-reporter-${CODACY_COVERAGE_REPORTER_VERSION}-assembly.jar report -l Java -r target/site/jacoco/jacoco.xml
+  - mvn jacoco:report -pl spring-test-terasoluna-gfw
+  - java -jar codacy-coverage-reporter-${CODACY_COVERAGE_REPORTER_VERSION}-assembly.jar report -l Java -r spring-test-terasoluna-gfw/target/site/jacoco/jacoco.xml
