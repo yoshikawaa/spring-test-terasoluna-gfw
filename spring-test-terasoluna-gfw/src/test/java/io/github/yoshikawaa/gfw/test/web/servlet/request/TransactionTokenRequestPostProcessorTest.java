@@ -4,6 +4,8 @@ import static io.github.yoshikawaa.gfw.test.web.servlet.request.TerasolunaGfwMoc
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -12,10 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +46,6 @@ public class TransactionTokenRequestPostProcessorTest {
 
     @RunWith(SpringRunner.class)
     public static class ForTerasolunaGfwWebBlankTest extends AbstractMockMvcSupport {
-
-        @Rule
-        public ExpectedException exception = ExpectedException.none();
 
         @Test
         public void testTransactionGlobal() throws Exception {
@@ -94,11 +91,9 @@ public class TransactionTokenRequestPostProcessorTest {
 
         @Test
         public void testTransactionTokenInterceptorNotFound() throws Exception {
-            exception.expect(NoSuchBeanDefinitionException.class);
-            exception.expectMessage(containsString("org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor"));
-
             MockMvc mvc = MockMvcBuilders.standaloneSetup(new TransactionTokenGlobalTokenController()).build();
-            mvc.perform(post("/transaction/global/in").with(transaction()));
+            NoSuchBeanDefinitionException e = assertThrows(NoSuchBeanDefinitionException.class, () -> mvc.perform(post("/transaction/global/in").with(transaction())));
+            assertThat(e.getMessage(), containsString("org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor"));
         }
 
         @Test

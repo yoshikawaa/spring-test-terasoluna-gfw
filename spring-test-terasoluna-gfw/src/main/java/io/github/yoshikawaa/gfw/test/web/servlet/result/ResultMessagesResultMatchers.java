@@ -143,7 +143,7 @@ public class ResultMessagesResultMatchers {
     /**
      * {@link ResultMessages} has specific type.
      * <p>
-     * Correspond to etc {@link ResultMessages#success()}, {@link ResultMessages#warn()}...
+     * Correspond to etc {@link ResultMessages#success()}, {@link ResultMessages#warning()}...
      * </p>
      * 
      * @param type type of result messages

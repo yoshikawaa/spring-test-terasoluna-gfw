@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>spring-test-terasoluna-gfw-context</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Testing Context for TERASOLUNA Server Framework for Java (5.x) with Spring TestContext Framework</name>
@@ -63,12 +63,17 @@
         </repository>
     </distributionManagement>
 
-    <parent>
-        <groupId>org.terasoluna.gfw</groupId>
-        <artifactId>terasoluna-gfw-parent</artifactId>
-        <version>5.5.1.RELEASE</version>
-        <relativePath></relativePath>
-    </parent>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.terasoluna.gfw</groupId>
+                <artifactId>terasoluna-gfw-parent</artifactId>
+                <version>${terasoluna-gfw.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- == JUnit == -->
@@ -185,7 +190,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version>
+                <version>3.0.0-M7</version>
                 <configuration>
                     <argLine>${jacocoArgs}</argLine>
                 </configuration>
@@ -193,7 +198,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.4</version>
+                <version>0.8.8</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -213,13 +218,21 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
+                <version>4.1</version>
                 <configuration>
-                    <header>NOTICE.txt</header>
-                    <includes>
-                        <include>pom.xml</include>
-                        <include>src/main/java/**</include>
-                    </includes>
+                    <mapping>
+                        <xml>XML_STYLE</xml>
+                        <java>JAVADOC_STYLE</java>
+                    </mapping>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>NOTICE.txt</header>
+                            <includes>
+                                <include>pom.xml</include>
+                                <include>src/main/java/**</include>
+                            </includes>
+                        </licenseSet>
+                    </licenseSets>
                 </configuration>
                 <executions>
                     <execution>
@@ -233,7 +246,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version><!--$NO-MVN-MAN-VER$-->
+                <version>3.4.1</version>
                 <configuration>
                     <show>protected</show>
                 </configuration>
@@ -249,7 +262,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.1.0</version><!--$NO-MVN-MAN-VER$-->
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -262,7 +275,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -277,21 +290,14 @@
     </build>
 
     <properties>
-        <java-version>1.8</java-version>
+        <java.version>11</java.version>
+        <encoding>UTF-8</encoding>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
         <gpg.skip>true</gpg.skip>
+        <terasoluna-gfw.version>5.7.1.SP1.RELEASE</terasoluna-gfw.version>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>jdk11</id>
-            <activation>
-                <jdk>11</jdk>
-            </activation>
-            <properties>
-                <!-- javadoc does not work on Java 11, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=920020 -->
-                <maven.javadoc.skip>true</maven.javadoc.skip>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>
