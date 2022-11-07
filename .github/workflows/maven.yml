@@ -1,0 +1,42 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ 'main' ]
+  pull_request:
+    branches: [ 'main' ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '11', '17' ]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ matrix.java }}
+        distribution: 'microsoft'
+        cache: maven
+    - name: Build with Maven
+      run: |
+        mvn -B -U clean install -Dapp.log.level.test=info
+        mvn -B jacoco:report -pl spring-test-terasoluna-gfw
+        mvn -B jacoco:report -pl spring-test-terasoluna-gfw-context
+
+    - name: Codacy Coverage Reporter
+      uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: spring-test-terasoluna-gfw/target/site/jacoco/jacoco.xml,spring-test-terasoluna-gfw-context/target/site/jacoco/jacoco.xml
+
+    - name: action-maven-publish
+      uses: samuelmeuli/action-maven-publish@v1.4.0
+      with:
+        nexus_username: ${{ secrets.NEXUS_USERNAME }}
+        nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+        maven_args: -Dmaven.test.skip=true
