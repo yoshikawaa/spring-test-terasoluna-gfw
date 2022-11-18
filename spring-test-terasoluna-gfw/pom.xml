@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>spring-test-terasoluna-gfw</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>Testing Library for TERASOLUNA Server Framework for Java (5.x) with Spring TestContext Framework</name>
