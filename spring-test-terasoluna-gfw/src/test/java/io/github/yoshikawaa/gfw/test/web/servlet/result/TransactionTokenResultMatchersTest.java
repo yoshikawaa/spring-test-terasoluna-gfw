@@ -20,22 +20,22 @@ public class TransactionTokenResultMatchersTest extends AbstractMockMvcSupport {
 
     @Test
     public void testTransactionGlobal() throws Exception {
-        valid("/transaction/global/", transactionToken().global());
+        valid("/transaction/global", transactionToken().global());
     }
 
     @Test
     public void testTransactionClass() throws Exception {
-        valid("/transaction/class/", transactionToken().namespace("class"));
+        valid("/transaction/class", transactionToken().namespace("class"));
     }
 
     @Test
     public void testTransactionMethod() throws Exception {
-        valid("/transaction/method/", transactionToken().namespace("method"));
+        valid("/transaction/method", transactionToken().namespace("method"));
     }
 
     @Test
     public void testTransactionClassMethod() throws Exception {
-        valid("/transaction/class-method/", transactionToken().namespace("class", "method"));
+        valid("/transaction/class-method", transactionToken().namespace("class", "method"));
     }
 
     @Test
