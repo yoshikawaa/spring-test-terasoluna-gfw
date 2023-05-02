@@ -12,9 +12,9 @@ Library that supports testing of TERASOLUNA Server Framework 5.x Common Library 
 
 ## Notes
 
-* Supports upper Java 11
+* Supports upper Java 17
 * Supports JUnit 4/5(Jupiter)
-* Supports Terasoluna 5.7.1.SP1
+* Supports Terasoluna 5.8.1
 
 ## Docs
 

@@ -8,9 +8,9 @@ Library that supports testing of TERASOLUNA Server Framework 5.x Common Library 
 
 # Notes
 
-* Supports upper Java 11
+* Supports upper Java 17
 * Supports JUnit 4/5(Jupiter)
-* Supports Terasoluna 5.7.1.SP1
+* Supports Terasoluna 5.8.1
 
 ----
 
@@ -31,7 +31,7 @@ Library that easily test function of Terasoluna Framework 5.x Common Libraries.
 <dependency>
     <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>spring-test-terasoluna-gfw</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -152,7 +152,7 @@ Library that easily set up tests that based on [TERASOLUNA blank project](https:
 <dependency>
     <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>spring-test-terasoluna-gfw-context</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
